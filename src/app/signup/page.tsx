@@ -96,6 +96,11 @@ export default function SignupPage() {
             Login
           </Link>
         </p>
+        <p className="text-center text-white/50 text-sm mt-4">
+          <Link href="/" className="text-white hover:text-orange-500 transition">
+            ← Back to Site
+          </Link>
+        </p>
       </div>
     </main>
   );
