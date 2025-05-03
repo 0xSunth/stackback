@@ -60,51 +60,51 @@ export default function AdminDashboardPage() {
   });
 
   return (
-    <main className="min-h-screen flex bg-[#121212] text-white">
-      {/* Sidebar */}
-      <aside className="w-64 bg-[#1B1E22] border-r border-[#33383E] p-6 flex flex-col gap-6">
-        <div className="flex items-center gap-2 mb-10">
+    <main className="min-h-screen flex flex-col md:flex-row bg-[#121212] text-white">
+      {/* Sidebar / Topbar */}
+      <aside className="w-full md:w-64 bg-[#1B1E22] border-b md:border-b-0 md:border-r border-[#33383E] p-6 flex md:flex-col gap-6 items-center justify-between md:justify-start">
+        <div className="flex items-center gap-2">
           <Image src="/bitcoin.png" alt="StackBack" width={28} height={28} />
           <span className="font-bold text-xl">StackBack</span>
         </div>
-        <nav className="flex flex-col gap-4 text-white/80 text-sm">
+        <nav className="flex gap-4 md:flex-col text-white/80 text-sm">
           <Link href="#" className="hover:text-white">Dashboard</Link>
           <Link href="/" className="text-orange-400 hover:text-white transition">← Back to App</Link>
         </nav>
       </aside>
 
       {/* Main Content */}
-      <section className="flex-1 p-8">
-        <h1 className="text-4xl font-extrabold mb-2">Admin Dashboard</h1>
+      <section className="flex-1 p-4 md:p-8">
+        <h1 className="text-3xl md:text-4xl font-extrabold mb-2">Admin Dashboard</h1>
         <p className="text-white/50 mb-6">Overview & Manage cashback submissions</p>
 
         {/* Overview cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-5 gap-6 mb-10">
-          <div className="bg-[#1B1E22] border border-[#33383E] rounded-lg p-6">
-            <p className="text-white/70 text-sm mb-2">Total Requests</p>
-            <p className="text-2xl font-bold">{cashbackRequests.length}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+          <div className="bg-[#1B1E22] border border-[#33383E] rounded-lg p-4">
+            <p className="text-white/70 text-sm mb-1">Total Requests</p>
+            <p className="text-xl font-bold">{cashbackRequests.length}</p>
           </div>
-          <div className="bg-[#1B1E22] border border-[#33383E] rounded-lg p-6">
-            <p className="text-white/70 text-sm mb-2">Approved</p>
-            <p className="text-2xl font-bold text-green-400">
+          <div className="bg-[#1B1E22] border border-[#33383E] rounded-lg p-4">
+            <p className="text-white/70 text-sm mb-1">Approved</p>
+            <p className="text-xl font-bold text-green-400">
               {cashbackRequests.filter(r => r.status === "Approved").length}
             </p>
           </div>
-          <div className="bg-[#1B1E22] border border-[#33383E] rounded-lg p-6">
-            <p className="text-white/70 text-sm mb-2">Rejected</p>
-            <p className="text-2xl font-bold text-red-400">
+          <div className="bg-[#1B1E22] border border-[#33383E] rounded-lg p-4">
+            <p className="text-white/70 text-sm mb-1">Rejected</p>
+            <p className="text-xl font-bold text-red-400">
               {cashbackRequests.filter(r => r.status === "Rejected").length}
             </p>
           </div>
-          <div className="bg-[#1B1E22] border border-[#33383E] rounded-lg p-6">
-            <p className="text-white/70 text-sm mb-2">Pending</p>
-            <p className="text-2xl font-bold text-orange-400">
+          <div className="bg-[#1B1E22] border border-[#33383E] rounded-lg p-4">
+            <p className="text-white/70 text-sm mb-1">Pending</p>
+            <p className="text-xl font-bold text-orange-400">
               {cashbackRequests.filter(r => r.status === "Pending").length}
             </p>
           </div>
-          <div className="bg-[#1B1E22] border border-[#33383E] rounded-lg p-6">
-            <p className="text-white/70 text-sm mb-2">Total BTC Paid</p>
-            <p className="text-2xl font-bold text-orange-400">
+          <div className="bg-[#1B1E22] border border-[#33383E] rounded-lg p-4">
+            <p className="text-white/70 text-sm mb-1">Total BTC Paid</p>
+            <p className="text-xl font-bold text-orange-400">
               {cashbackRequests
                 .filter(r => r.status === "Approved")
                 .reduce((sum, r) => sum + parseFloat(r.amount), 0)
@@ -114,7 +114,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Filters */}
-        <div className="flex flex-col md:flex-row gap-4 mb-4 md:items-center">
+        <div className="flex flex-col md:flex-row gap-4 mb-4">
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
@@ -130,14 +130,14 @@ export default function AdminDashboardPage() {
             placeholder="Search user or merchant"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="bg-[#1B1E22] border border-[#33383E] rounded-lg px-3 py-2 focus:outline-none w-full md:w-64 text-white/80 hover:border-orange-500 transition"
+            className="bg-[#1B1E22] border border-[#33383E] rounded-lg px-3 py-2 w-full md:w-64 focus:outline-none text-white/80 hover:border-orange-500 transition"
           />
         </div>
 
         {/* Cashback Requests Table */}
         <h2 className="text-2xl font-semibold mb-4">Latest Submissions</h2>
         <div className="border border-[#33383E] rounded-lg overflow-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-sm min-w-[600px]">
             <thead className="bg-[#1B1E22] text-white/80">
               <tr>
                 <th className="px-4 py-3 text-left">Date</th>
