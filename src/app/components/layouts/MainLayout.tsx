@@ -39,10 +39,11 @@ export default function MainLayout({ children }: MainLayoutProps) {
 
         {/* Login button */}
         <Link 
-          href="/login" 
-          className="text-sm text-white/80 border border-white/30 px-4 py-2 rounded-lg whitespace-nowrap hover:text-white hover:border-orange-500 transition"
-        >
-          Login
+            href="/login" 
+            className="text-sm text-white border border-orange-500 px-4 py-2 rounded-lg whitespace-nowrap 
+            transition duration-300 ease-in-out hover:bg-orange-500/20 hover:text-white hover:border-orange-400"
+            >
+            Login
         </Link>
       </header>
 
