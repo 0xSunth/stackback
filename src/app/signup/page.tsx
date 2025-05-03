@@ -74,10 +74,14 @@ export default function SignupPage() {
         </form>
 
         <p className="text-center text-white/60 text-sm mt-4">
-          Already have an account?{" "}
-          <Link href="/login" className="text-orange-400 underline">
-            Log in
-          </Link>
+            Already have an account?{" "}
+            <Link 
+                href="/login" 
+                className="text-sm text-white border border-orange-500 px-4 py-2 rounded-lg whitespace-nowrap 
+                transition duration-300 ease-in-out hover:bg-orange-500/20 hover:text-white hover:border-orange-400"
+                >
+                Login
+            </Link>
         </p>
       </div>
     </main>

@@ -38,9 +38,12 @@ export default function MainLayout({ children }: MainLayoutProps) {
         </nav>
 
         {/* Login button */}
-        <button className="text-sm text-white/80 border border-white/30 px-4 py-2 rounded-lg whitespace-nowrap">
+        <Link 
+          href="/login" 
+          className="text-sm text-white/80 border border-white/30 px-4 py-2 rounded-lg whitespace-nowrap hover:text-white hover:border-orange-500 transition"
+        >
           Login
-        </button>
+        </Link>
       </header>
 
       {/* Page content */}
