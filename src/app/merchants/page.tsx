@@ -23,6 +23,7 @@ export default function MerchantsPage() {
     const matchSearch = merchant.name.toLowerCase().includes(search.toLowerCase());
     const matchFilter =
       filter === "All" ||
+      (filter === "Partner" && merchant.partner === true) ||
       (filter === "5" && merchant.cashback >= 5) ||
       (filter === "8" && merchant.cashback >= 8);
     return matchSearch && matchFilter;
@@ -55,6 +56,7 @@ export default function MerchantsPage() {
       className="bg-[#1B1E22] border border-[#33383E] text-white/90 rounded-lg px-4 py-3 focus:outline-none min-w-[150px]"
     >
       <option value="All">All Cashback</option>
+      <option value="Partner">Only Partners</option>
       <option value="5">5% or more</option>
       <option value="8">8% or more</option>
     </select>
