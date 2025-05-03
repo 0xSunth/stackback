@@ -7,12 +7,17 @@ import Link from "next/link";
 export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [consent, setConsent] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!consent) {
       alert("Please accept the privacy policy.");
+      return;
+    }
+    if (password !== confirmPassword) {
+      alert("Passwords do not match.");
       return;
     }
     alert("Account created successfully!");
@@ -55,6 +60,15 @@ export default function SignupPage() {
             className="bg-[#121212] border border-[#33383E] rounded-lg px-4 py-3 text-white/90 focus:outline-none"
           />
 
+          <input
+            type="password"
+            placeholder="Confirm password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+            className="bg-[#121212] border border-[#33383E] rounded-lg px-4 py-3 text-white/90 focus:outline-none"
+          />
+
           <label className="flex items-center gap-2 text-sm text-white/80">
             <input
               type="checkbox"
@@ -62,7 +76,10 @@ export default function SignupPage() {
               onChange={() => setConsent(!consent)}
               className="accent-orange-500"
             />
-            I agree to the <Link href="/privacy" className="text-orange-400 underline">privacy policy</Link>
+            I agree to the{" "}
+            <Link href="/privacy" className="text-orange-400 underline">
+              privacy policy
+            </Link>
           </label>
 
           <button
@@ -74,14 +91,10 @@ export default function SignupPage() {
         </form>
 
         <p className="text-center text-white/60 text-sm mt-4">
-            Already have an account?{" "}
-            <Link 
-                href="/login" 
-                className="text-sm text-white border border-orange-500 px-4 py-2 rounded-lg whitespace-nowrap 
-                transition duration-300 ease-in-out hover:bg-orange-500/20 hover:text-white hover:border-orange-400"
-                >
-                Login
-            </Link>
+          Already have an account?{" "}
+          <Link href="/login" className="text-orange-400 underline">
+            Login
+          </Link>
         </p>
       </div>
     </main>
