@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 interface PartnerLogoProps {
   logoSrc: string;
   logoAlt: string;
@@ -5,10 +7,12 @@ interface PartnerLogoProps {
 
 export default function PartnerLogo({ logoSrc, logoAlt }: PartnerLogoProps) {
   return (
-    <img
+    <Image
       src={logoSrc}
       alt={logoAlt}
-      className="h-8 object-contain opacity-80"
+      width={96} // ou une taille adaptée
+      height={32}
+      className="opacity-80 object-contain"
     />
   );
 }
