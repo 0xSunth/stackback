@@ -9,7 +9,7 @@ import SubmitCashbackModal from "@/app/components/modals/SubmitCashbackModal";
 const cashbackHistory = [
   { date: "Apr 10, 2024", merchant: "Nike", status: "Pending", amount: "0.0008 BTC", logo: "/merchants/nike.png" },
   { date: "Mar 28, 2024", merchant: "Amazon", status: "Confirmed", amount: "0.0012 BTC", logo: "/merchants/amazon.png" },
-  { date: "Mar 15, 2024", merchant: "Walmart", status: "Confirmed", amount: "0.0005 BTC", logo: "/merchants/walmart.png" },
+  { date: "Mar 15, 2024", merchant: "Walmart", status: "Rejected", amount: "0.0005 BTC", logo: "/merchants/walmart.png" },
   { date: "Feb 2, 2024", merchant: "Nike", status: "Confirmed", amount: "0.0009 BTC", logo: "/merchants/nike.png" },
 ];
 

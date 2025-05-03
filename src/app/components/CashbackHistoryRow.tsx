@@ -33,7 +33,15 @@ export default function CashbackHistoryRow({
         />
         <span>{merchant}</span>
       </td>
-      <td className="px-4 py-3 text-orange-400">{status}</td>
+      <td
+        className={`px-4 py-3 
+          ${status === "Confirmed" ? "text-green-400 rounded-lg px-2 py-1" :
+            status === "Rejected" ? "text-red-400 rounded-lg px-2 py-1" :
+            "text-orange-400  rounded-lg px-2 py-1"}
+        `}
+      >
+        {status}
+      </td>
       <td className="px-4 py-3 text-right font-semibold">{amount}</td>
     </tr>
   );
