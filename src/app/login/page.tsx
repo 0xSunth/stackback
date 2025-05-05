@@ -1,45 +1,52 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
+import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useLogin } from '../hooks/useLogin';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { login, errors, loading } = useLogin();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    // Ici tu connecteras l’utilisateur avec ton système d'auth.
-    alert("Logged in!");
-  };
+    login({ email, password });
+  }
 
   return (
     <main
-      className="min-h-screen flex items-center justify-center bg-[#121212] text-white px-4"
+      className="flex min-h-screen items-center justify-center bg-[#121212] px-4 text-white"
       style={{
-        background: "radial-gradient(circle, #1E1E1E 0%, #121212 100%)",
+        background: 'radial-gradient(circle, #1E1E1E 0%, #121212 100%)',
       }}
     >
-      <div className="bg-[#1B1E22] border border-[#33383E] rounded-xl p-8 max-w-md w-full shadow-lg">
-        <div className="flex items-center gap-2 justify-center mb-6">
+      <div className="w-full max-w-md rounded-xl border border-[#33383E] bg-[#1B1E22] p-8 shadow-lg">
+        <div className="mb-6 flex items-center justify-center gap-2">
           <Image src="/bitcoin.png" alt="logo" width={32} height={32} />
-          <span className="font-semibold text-2xl">StackBack</span>
+          <span className="text-2xl font-semibold">StackBack</span>
         </div>
 
-        <h1 className="text-3xl font-bold mb-2 text-center">Welcome back</h1>
-        <p className="text-white/70 text-center mb-6 text-sm">
-          Login to your account.
-        </p>
+        <h1 className="mb-2 text-center text-3xl font-bold">Welcome back</h1>
+        <p className="mb-6 text-center text-sm text-white/70">Login to your account.</p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          {errors.length > 0 && (
+            <div className="rounded-lg bg-red-900/30 p-3 text-sm text-red-400">
+              {errors.map((err, idx) => (
+                <div key={idx}>{err}</div>
+              ))}
+            </div>
+          )}
           <input
             type="email"
             placeholder="Your email address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="bg-[#121212] border border-[#33383E] rounded-lg px-4 py-3 text-white/90 focus:outline-none"
+            className="rounded-lg border border-[#33383E] bg-[#121212] px-4 py-3 text-white/90 focus:outline-none"
           />
 
           <input
@@ -48,25 +55,25 @@ export default function LoginPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="bg-[#121212] border border-[#33383E] rounded-lg px-4 py-3 text-white/90 focus:outline-none"
+            className="rounded-lg border border-[#33383E] bg-[#121212] px-4 py-3 text-white/90 focus:outline-none"
           />
 
           <button
             type="submit"
-            className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-3 rounded-lg transition"
+            className="cursor-pointer rounded-lg bg-orange-500 px-4 py-3 font-semibold text-white transition hover:bg-orange-600"
           >
-            Login
+            {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
 
-        <p className="text-center text-white/60 text-sm mt-4">
-          Don’t have an account?{" "}
+        <p className="mt-4 text-center text-sm text-white/60">
+          Don’t have an account?{' '}
           <Link href="/signup" className="text-orange-400 underline">
             Sign up
           </Link>
         </p>
-        <p className="text-center text-white/50 text-sm mt-4">
-          <Link href="/" className="text-white hover:text-orange-500 transition">
+        <p className="mt-4 text-center text-sm text-white/50">
+          <Link href="/" className="text-white transition hover:text-orange-500">
             ← Back to Site
           </Link>
         </p>
