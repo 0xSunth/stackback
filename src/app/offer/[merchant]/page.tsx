@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { redirect } from 'next/navigation';
 import { useEffect } from 'react';
@@ -7,28 +7,28 @@ import Image from 'next/image';
 // Simulation d'une base de données de marchands :
 const merchants = {
   amazon: {
-    name: "Amazon",
+    name: 'Amazon',
     cashback: 8,
-    logo: "/merchants/amazon.png",
-    url: "https://www.amazon.com",
+    logo: '/merchants/amazon.png',
+    url: 'https://www.amazon.com',
   },
   walmart: {
-    name: "Walmart",
+    name: 'Walmart',
     cashback: 3,
-    logo: "/merchants/walmart.png",
-    url: "https://www.walmart.com",
+    logo: '/merchants/walmart.png',
+    url: 'https://www.walmart.com',
   },
   nike: {
-    name: "Nike",
+    name: 'Nike',
     cashback: 6,
-    logo: "/merchants/nike.png",
-    url: "https://www.nike.com",
+    logo: '/merchants/nike.png',
+    url: 'https://www.nike.com',
   },
   airbnb: {
-    name: "Airbnb",
+    name: 'Airbnb',
     cashback: 5,
-    logo: "/merchants/airbnb.png",
-    url: "https://www.airbnb.com",
+    logo: '/merchants/airbnb.png',
+    url: 'https://www.airbnb.com',
   },
 };
 
@@ -43,7 +43,7 @@ export default function OfferPage({ params }: Props) {
 
   if (!merchantData) {
     return (
-      <main className="min-h-screen flex items-center justify-center text-white">
+      <main className="flex min-h-screen items-center justify-center text-white">
         <h1>Merchant not found.</h1>
       </main>
     );
@@ -59,23 +59,33 @@ export default function OfferPage({ params }: Props) {
 
   return (
     <main
-      className="min-h-screen flex flex-col items-center justify-center text-white px-4 text-center"
+      className="flex min-h-screen flex-col items-center justify-center px-4 text-center text-white"
       style={{
         background: 'radial-gradient(circle, #1E1E1E 0%, #121212 100%)',
       }}
     >
-      <Image src={merchantData.logo} alt={merchantData.name} width={80} height={80} className="mb-4 max-h-[48px]" />
-      <h1 className="text-3xl font-bold mb-2">You're earning {merchantData.cashback}% Bitcoin back!</h1>
+      <Image
+        src={merchantData.logo}
+        alt={merchantData.name}
+        width={80}
+        height={80}
+        className="mb-4 max-h-[48px]"
+      />
+      <h1 className="mb-2 text-3xl font-bold">
+        You're earning {merchantData.cashback}% Bitcoin back!
+      </h1>
       <p className="mb-6 text-white/80">You are being redirected to {merchantData.name}...</p>
-      <a 
-        href={merchantData.url} 
-        target="_blank" 
+      <a
+        href={merchantData.url}
+        target="_blank"
         rel="noopener noreferrer"
-        className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-3 rounded-lg text-base"
+        className="rounded-lg bg-orange-500 px-8 py-3 text-base font-semibold text-white hover:bg-orange-600"
       >
         Go to {merchantData.name} now
       </a>
-      <p className="mt-4 text-sm text-white/50">If you are not redirected automatically, click the button.</p>
+      <p className="mt-4 text-sm text-white/50">
+        If you are not redirected automatically, click the button.
+      </p>
     </main>
   );
 }
