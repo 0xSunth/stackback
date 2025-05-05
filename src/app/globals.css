@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   --background: #ffffff;
@@ -25,10 +25,11 @@ body {
   font-family: var(--font-poppins), sans-serif;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   min-height: 100%;
-  background: radial-gradient(circle, #1E1E1E 0%, #121212 100%);
+  background: radial-gradient(circle, #1e1e1e 0%, #121212 100%);
   margin: 0;
   padding: 0;
   overflow-x: hidden;
