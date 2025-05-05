@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
@@ -34,11 +34,9 @@ export default function SubmitCashbackModal({ isOpen, onClose }: SubmitCashbackM
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <Dialog.Panel className="bg-[#1B1E22] rounded-xl p-8 max-w-sm w-full border border-[#33383E] text-white shadow-xl transition-all">
-              <Dialog.Title className="text-2xl font-semibold mb-2">
-                Submit Cashback
-              </Dialog.Title>
-              <p className="text-white/70 mb-4 text-sm">
+            <Dialog.Panel className="w-full max-w-sm rounded-xl border border-[#33383E] bg-[#1B1E22] p-8 text-white shadow-xl transition-all">
+              <Dialog.Title className="mb-2 text-2xl font-semibold">Submit Cashback</Dialog.Title>
+              <p className="mb-4 text-sm text-white/70">
                 Enter the details of your purchase below to submit a cashback request.
               </p>
 
@@ -49,7 +47,7 @@ export default function SubmitCashbackModal({ isOpen, onClose }: SubmitCashbackM
                   <input
                     type="number"
                     placeholder="Enter amount"
-                    className="w-full bg-[#121212] border border-[#33383E] rounded-lg px-3 py-2 focus:outline-none"
+                    className="w-full rounded-lg border border-[#33383E] bg-[#121212] px-3 py-2 focus:outline-none"
                   />
                 </div>
 
@@ -57,7 +55,7 @@ export default function SubmitCashbackModal({ isOpen, onClose }: SubmitCashbackM
                   <label className="text-sm">Date</label>
                   <input
                     type="date"
-                    className="w-full bg-[#121212] border border-[#33383E] rounded-lg px-3 py-2 focus:outline-none"
+                    className="w-full rounded-lg border border-[#33383E] bg-[#121212] px-3 py-2 focus:outline-none"
                   />
                 </div>
 
@@ -65,13 +63,13 @@ export default function SubmitCashbackModal({ isOpen, onClose }: SubmitCashbackM
                   <label className="text-sm">Receipt</label>
                   <input
                     type="file"
-                    className="w-full text-sm bg-[#121212] border border-[#33383E] rounded-lg px-3 py-2 focus:outline-none"
+                    className="w-full rounded-lg border border-[#33383E] bg-[#121212] px-3 py-2 text-sm focus:outline-none"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-lg"
+                  className="rounded-lg bg-orange-500 px-4 py-2 font-semibold text-white hover:bg-orange-600"
                 >
                   Submit
                 </button>
@@ -80,7 +78,7 @@ export default function SubmitCashbackModal({ isOpen, onClose }: SubmitCashbackM
               {/* Close button */}
               <button
                 onClick={onClose}
-                className="absolute top-2 right-3 text-white/50 hover:text-white text-xl"
+                className="absolute top-2 right-3 text-xl text-white/50 hover:text-white"
               >
                 &times;
               </button>

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from 'next/image';
 
 interface FeaturedMerchantCardProps {
   logoSrc: string;
@@ -13,7 +13,7 @@ export default function FeaturedMerchantCard({
 }: FeaturedMerchantCardProps) {
   return (
     <div
-      className="rounded-lg p-6 flex flex-col items-center justify-center w-[250px] h-[250px] text-center"
+      className="flex h-[250px] w-[250px] flex-col items-center justify-center rounded-lg p-6 text-center"
       style={{
         backgroundColor: '#1B1E22',
         border: '1px solid #33383E',
@@ -25,14 +25,12 @@ export default function FeaturedMerchantCard({
           src={logoSrc}
           alt={logoAlt}
           fill
-          style={{ objectFit: "contain" }}
+          style={{ objectFit: 'contain' }}
           sizes="(max-width: 250px) 120px"
         />
       </div>
-      <p className="text-orange-400 text-[64px] font-semibold leading-none">
-        {cashbackPercent}%
-      </p>
-      <p className="text-white text-[24px] font-semibold mt-2">Bitcoin back</p>
+      <p className="text-[64px] leading-none font-semibold text-orange-400">{cashbackPercent}%</p>
+      <p className="mt-2 text-[24px] font-semibold text-white">Bitcoin back</p>
     </div>
   );
 }
