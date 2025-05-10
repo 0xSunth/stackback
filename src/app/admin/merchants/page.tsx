@@ -1,21 +1,19 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
+import { useState } from 'react';
 import { MerchantForm } from './MerchantForm';
+import { useMerchants } from '@/app/hooks/useMerchants';
+import { Merchant } from '@/app/utils/types';
 
 export default function AdminMerchantsPage() {
-  type Merchant = {
-    id: number;
-    logoUrl: string;
-    name: string;
-    cashback: number;
-    partner: boolean;
-  };
+  const [limit, setLimit] = useState<number>(12);
 
-  const initialMerchants: Merchant[] = [
-    { id: 1, name: 'Nike', cashback: 5, partner: false, logoUrl: '' },
-    { id: 2, name: 'Amazon', cashback: 3, partner: true, logoUrl: '' },
-    { id: 3, name: 'Walmart', cashback: 4, partner: false, logoUrl: '' },
-  ];
+  const { merchants } = useMerchants({
+    limit,
+  });
+
   return (
     <main className="flex min-h-screen flex-col bg-[#121212] text-white md:flex-row">
       {/* Sidebar */}
@@ -55,15 +53,15 @@ export default function AdminMerchantsPage() {
               </tr>
             </thead>
             <tbody>
-              {initialMerchants.map((m) => (
+              {merchants.map((merchant: Merchant) => (
                 <tr
-                  key={m.id}
+                  key={merchant.id}
                   className="border-t border-[#33383E] transition hover:bg-[#1B1E22]/50"
                 >
-                  <td className="px-4 py-3">{m.name}</td>
-                  <td className="px-4 py-3">{m.cashback}%</td>
+                  <td className="px-4 py-3">{merchant.name}</td>
+                  <td className="px-4 py-3">{merchant.cashbackPercent}%</td>
                   <td className="px-4 py-3">
-                    {m.partner ? (
+                    {merchant.partner ? (
                       <span className="rounded-full bg-orange-500 px-2 py-0.5 text-xs text-black">
                         Partner
                       </span>
@@ -81,7 +79,7 @@ export default function AdminMerchantsPage() {
                   </td>
                 </tr>
               ))}
-              {initialMerchants.length === 0 && (
+              {merchants.length === 0 && (
                 <tr>
                   <td colSpan={4} className="py-4 text-center text-white/60">
                     No merchants added yet.
