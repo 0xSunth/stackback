@@ -3,29 +3,26 @@
 import MerchantListCard from '@/app/components/MerchantListCard';
 import HeaderLayout from '@/app/components/layouts/HeaderLayout';
 import { useState } from 'react';
-
-const merchants = [
-  { name: 'Adidas', cashback: 8, logo: '/merchants/adidas.png', partner: false },
-  { name: 'Amazon', cashback: 8, logo: '/merchants/amazon.png', partner: false },
-  { name: 'Airbnb', cashback: 3, logo: '/merchants/airbnb.png', partner: true },
-  { name: 'Best Buy', cashback: 11, logo: '/merchants/bestbuy.png', partner: false },
-  { name: 'Walmart', cashback: 8, logo: '/merchants/walmart.png', partner: true },
-  { name: 'Nike', cashback: 6, logo: '/merchants/nike.png', partner: false },
-  { name: 'Macy’s', cashback: 5, logo: '/merchants/macys.png', partner: false },
-  { name: 'Home Depot', cashback: 11, logo: '/merchants/homedepot.png', partner: true },
-];
+import { useMerchants } from '../hooks/useMerchants';
 
 export default function MerchantsPage() {
+  const [limit, setLimit] = useState<number>(12);
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('All');
+
+  const { merchants } = useMerchants({
+    limit,
+  });
+
+  console.log('merchants', merchants);
 
   const filteredMerchants = merchants.filter((merchant) => {
     const matchSearch = merchant.name.toLowerCase().includes(search.toLowerCase());
     const matchFilter =
       filter === 'All' ||
       (filter === 'Partner' && merchant.partner === true) ||
-      (filter === '5' && merchant.cashback >= 5) ||
-      (filter === '8' && merchant.cashback >= 8);
+      (filter === '5' && merchant.cashbackPercent >= 5) ||
+      (filter === '8' && merchant.cashbackPercent >= 8);
     return matchSearch && matchFilter;
   });
 
@@ -69,8 +66,8 @@ export default function MerchantsPage() {
             <MerchantListCard
               key={index}
               name={merchant.name}
-              cashback={merchant.cashback}
-              logo={merchant.logo}
+              cashback={merchant.cashbackPercent}
+              logo={merchant.logoUrl}
               partner={merchant.partner}
             />
           ))

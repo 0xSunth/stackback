@@ -3,56 +3,38 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
-
-const initialRequests = [
-  {
-    id: 1,
-    date: '2024-04-10',
-    user: 'user123',
-    merchant: 'Nike',
-    amount: '0.0008 BTC',
-    status: 'Pending',
-    receipt: '/receipts/receipt1.png',
-    partner: false,
-  },
-  {
-    id: 2,
-    date: '2024-03-28',
-    user: 'user456',
-    merchant: 'Amazon',
-    amount: '0.0012 BTC',
-    status: 'Approved',
-    receipt: '/receipts/receipt2.png',
-    partner: true,
-  },
-  {
-    id: 3,
-    date: '2024-03-15',
-    user: 'user789',
-    merchant: 'Walmart',
-    amount: '0.0005 BTC',
-    status: 'Rejected',
-    receipt: '/receipts/receipt3.png',
-    partner: false,
-  },
-];
+import { useCashbackRequests } from '@/app/hooks/useCashbackRequests';
+import { CashbackRequestWithRelations, CashbackStatus } from '@/app/utils/types';
 
 export default function AdminDashboardPage() {
-  const [cashbackRequests, setCashbackRequests] = useState(initialRequests);
+  const [limit, setLimit] = useState<number>(12);
   const [statusFilter, setStatusFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const handleStatusChange = (id: number, newStatus: string) => {
+  const { cashbackRequests, setCashbackRequests } = useCashbackRequests({
+    limit,
+  });
+
+  const handleStatusChange = (id: string, newStatus: 'pending' | 'approved' | 'rejected') => {
+    // Optionnel : appel à une API pour mise à jour côté serveur
+    // await fetch(`/api/cashback/${id}`, { method: 'PATCH', body: JSON.stringify({ status: newStatus }) })
+
+    // Pour mise à jour locale (si tu veux le simuler côté client)
     setCashbackRequests((prev) =>
       prev.map((req) => (req.id === id ? { ...req, status: newStatus } : req)),
     );
   };
 
-  const filteredRequests = cashbackRequests.filter((r) => {
-    const matchesStatus = statusFilter === 'All' || r.status === statusFilter;
+  const filteredRequests = cashbackRequests.filter((cashback: CashbackRequestWithRelations) => {
+    const matchesStatus = statusFilter === 'All' || cashback.status === statusFilter;
+
+    const userField = cashback.userEmail || '';
+    const merchantField = cashback.merchantName || '';
+
     const matchesSearch =
-      r.user.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      r.merchant.toLowerCase().includes(searchQuery.toLowerCase());
+      userField.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      merchantField.toLowerCase().includes(searchQuery.toLowerCase());
+
     return matchesStatus && matchesSearch;
   });
 
@@ -91,28 +73,30 @@ export default function AdminDashboardPage() {
           <div className="rounded-lg border border-[#33383E] bg-[#1B1E22] p-4">
             <p className="mb-1 text-sm text-white/70">Approved</p>
             <p className="text-xl font-bold text-green-400">
-              {cashbackRequests.filter((r) => r.status === 'Approved').length}
+              {cashbackRequests.filter((cashback) => cashback.status === 'approved').length}
             </p>
           </div>
           <div className="rounded-lg border border-[#33383E] bg-[#1B1E22] p-4">
             <p className="mb-1 text-sm text-white/70">Rejected</p>
             <p className="text-xl font-bold text-red-400">
-              {cashbackRequests.filter((r) => r.status === 'Rejected').length}
+              {cashbackRequests.filter((cashback) => cashback.status === 'rejected').length}
             </p>
           </div>
           <div className="rounded-lg border border-[#33383E] bg-[#1B1E22] p-4">
             <p className="mb-1 text-sm text-white/70">Pending</p>
             <p className="text-xl font-bold text-orange-400">
-              {cashbackRequests.filter((r) => r.status === 'Pending').length}
+              {cashbackRequests.filter((cashback) => cashback.status === 'pending').length}
             </p>
           </div>
           <div className="rounded-lg border border-[#33383E] bg-[#1B1E22] p-4">
             <p className="mb-1 text-sm text-white/70">Total BTC Paid</p>
             <p className="text-xl font-bold text-orange-400">
               {cashbackRequests
-                .filter((r) => r.status === 'Approved')
-                .reduce((sum, r) => sum + parseFloat(r.amount), 0)
-                .toFixed(4)}{' '}
+                .filter((cashback) => cashback.status === 'approved')
+                .reduce(
+                  (sum, cashback) => sum + parseFloat(cashback.amount_btc.toString()),
+                  0,
+                )}{' '}
               BTC
             </p>
           </div>
@@ -126,9 +110,9 @@ export default function AdminDashboardPage() {
             className="rounded-lg border border-[#33383E] bg-[#1B1E22] px-3 py-2 text-white/80 transition hover:border-orange-500 focus:outline-none"
           >
             <option value="All">All Status</option>
-            <option value="Pending">Pending</option>
-            <option value="Approved">Approved</option>
-            <option value="Rejected">Rejected</option>
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
           </select>
           <input
             type="text"
@@ -154,53 +138,61 @@ export default function AdminDashboardPage() {
               </tr>
             </thead>
             <tbody>
-              {filteredRequests.map((r) => (
+              {filteredRequests.map((cashback) => (
                 <tr
-                  key={r.id}
+                  key={cashback.id}
                   className="border-t border-[#33383E] transition hover:bg-[#1B1E22]/50"
                 >
-                  <td className="px-4 py-3">{r.date}</td>
-                  <td className="px-4 py-3">{r.user}</td>
+                  <td className="px-4 py-3">{cashback.createdAt}</td>
+                  <td className="px-4 py-3">{cashback.userEmail}</td>
                   <td className="flex items-center gap-1 px-4 py-3">
-                    {r.merchant}
-                    {r.partner && (
+                    {cashback.merchantName}
+                    {cashback.partner && (
                       <span className="ml-1 rounded-full bg-orange-500 px-2 py-0.5 text-xs text-black">
                         Partner
                       </span>
                     )}
                   </td>
-                  <td className="px-4 py-3">{r.amount}</td>
+                  <td className="px-4 py-3">
+                    {parseFloat(cashback.amount_btc.toString()).toFixed(4)}
+                  </td>
                   <td className="px-4 py-3">
                     <select
-                      value={r.status}
-                      onChange={(e) => handleStatusChange(r.id, e.target.value)}
+                      value={cashback.status}
+                      onChange={(e) =>
+                        handleStatusChange(cashback.id, e.target.value as CashbackStatus)
+                      }
                       className={`rounded-lg border border-[#33383E] bg-[#1B1E22] px-2 py-1 text-sm ${
-                        r.status === 'Approved'
+                        cashback.status === 'approved'
                           ? 'bg-green-900/20 text-green-400'
-                          : r.status === 'Rejected'
+                          : cashback.status === 'rejected'
                             ? 'bg-red-900/20 text-red-400'
                             : 'bg-orange-900/20 text-orange-400'
                       } `}
                     >
-                      <option value="Pending">Pending</option>
-                      <option value="Approved">Approved</option>
-                      <option value="Rejected">Rejected</option>
+                      <option value="pending">Pending</option>
+                      <option value="approved">Approved</option>
+                      <option value="rejected">Rejected</option>
                     </select>
                   </td>
                   <td className="px-4 py-3">
-                    <a href={r.receipt} className="text-orange-400 underline" target="_blank">
+                    <a
+                      href={cashback.receiptUrl}
+                      className="text-orange-400 underline"
+                      target="_blank"
+                    >
                       View
                     </a>
                   </td>
                 </tr>
               ))}
-              {filteredRequests.length === 0 && (
+              {/* {filteredRequests.length === 0 && (
                 <tr>
                   <td colSpan={6} className="py-4 text-center text-white/60">
                     No matching requests found.
                   </td>
                 </tr>
-              )}
+              )} */}
             </tbody>
           </table>
         </div>

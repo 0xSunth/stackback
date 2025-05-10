@@ -74,7 +74,7 @@ export default function DashboardPage() {
             ) : (
               <button
                 onClick={connectWallet}
-                className="rounded-lg border border-orange-500 px-6 py-2 text-base text-orange-400 transition hover:bg-orange-500/20"
+                className="cursor-pointer rounded-lg border border-orange-500 px-6 py-2 text-base text-orange-400 transition hover:bg-orange-500/20"
               >
                 Connect Wallet
               </button>
