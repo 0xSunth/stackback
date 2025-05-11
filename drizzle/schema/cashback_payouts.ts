@@ -1,5 +1,5 @@
 import { numeric, pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
-import { cashbackRequests } from '@/db/schemas';
+import { cashbackRequests } from '@/drizzle/schema';
 
 export const cashbackPayouts = pgTable('cashback_payouts', {
   id: uuid('id').primaryKey().defaultRandom(),

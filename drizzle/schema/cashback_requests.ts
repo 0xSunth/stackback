@@ -1,6 +1,6 @@
 import { relations } from 'drizzle-orm';
 import { numeric, pgEnum, pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
-import { users, merchants } from '@/db/schemas';
+import { users, merchants } from '@/drizzle/schema';
 
 export const statusEnum = pgEnum('status', ['pending', 'approved', 'rejected']);
 

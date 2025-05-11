@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
-import { CashbackRequestWithRelations } from '../utils/types';
+import { Merchant } from '../utils/types';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export const useCashbackRequests = ({
+export const useHighlightMerchants = ({
   page = 1,
   limit = 20,
 }: {
   page?: number;
   limit?: number;
 }) => {
-  const [cashbackRequests, setCashbackRequests] = useState<CashbackRequestWithRelations[]>([]);
+  const [merchants, setMerchants] = useState<Merchant[]>([]);
   const [errors, setErrors] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -20,16 +20,16 @@ export const useCashbackRequests = ({
       return;
     }
 
-    const fetchCashbackRequests = async () => {
+    const fetchHighlightMerchants = async () => {
       try {
         const query = new URLSearchParams();
         query.append('page', page.toString());
         query.append('limit', limit.toString());
 
-        const response = await fetch(`${API_URL}/api/cashback/requests?${query.toString()}`);
+        const response = await fetch(`${API_URL}/api/merchants/highlight?${query.toString()}`);
         const result = await response.json();
         if (result.length != 0) {
-          setCashbackRequests(result.cashbackRequests);
+          setMerchants(result.merchants);
         } else {
           const errorMessage = result.errors || result.error || 'Unknown error';
           if (Array.isArray(errorMessage)) {
@@ -40,13 +40,13 @@ export const useCashbackRequests = ({
         }
       } catch (error) {
         setErrors(['Network or server error.']);
-        console.error('Failed to fetch cashback request:', error);
+        console.error('Failed to fetch merchants:', error);
       } finally {
         setLoading(false);
       }
     };
-    fetchCashbackRequests();
+    fetchHighlightMerchants();
   }, [page, limit]);
 
-  return { cashbackRequests, setCashbackRequests, errors, loading };
+  return { merchants, errors, loading };
 };

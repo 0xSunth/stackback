@@ -1,5 +1,5 @@
 import { pgTable, text, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
-import { users, merchants } from '@/db/schemas';
+import { users, merchants } from '@/drizzle/schema';
 
 export const affiliateClicks = pgTable('affiliate_clicks', {
   id: uuid('id').primaryKey().defaultRandom(),

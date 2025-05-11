@@ -3,7 +3,7 @@ import { Merchant } from '../utils/types';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export const useMerchants = ({ page = 1, limit = 12 }: { page?: number; limit?: number }) => {
+export const useMerchants = ({ page = 1, limit = 20 }: { page?: number; limit?: number }) => {
   const [merchants, setMerchants] = useState<Merchant[]>([]);
   const [errors, setErrors] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);

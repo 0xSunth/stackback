@@ -8,7 +8,7 @@ import { useMerchants } from '@/app/hooks/useMerchants';
 import { Merchant } from '@/app/utils/types';
 
 export default function AdminMerchantsPage() {
-  const [limit, setLimit] = useState<number>(12);
+  const [limit, setLimit] = useState<number>(20);
 
   const { merchants } = useMerchants({
     limit,

@@ -8,24 +8,24 @@ export interface Merchant {
   updatedAt: string;
 }
 
+export type CashbackStatus = 'pending' | 'approved' | 'rejected';
+
 export interface CashbackRequests {
   id: string;
-  user_id: string;
-  merchant_id: string;
-  amount_btc: number;
-  status: 'pending' | 'approved' | 'rejected';
+  userId: string;
+  merchantId: string;
+  amountBtc: number;
+  status: CashbackStatus;
   receiptUrl: string | undefined;
-  created_at: string;
+  createdAt: string;
 }
 
 export interface CashbackRequestWithRelations {
   id: string;
   amount_btc: number;
-  status: 'pending' | 'approved' | 'rejected';
+  status: CashbackStatus;
   receiptUrl: string | undefined;
   createdAt: string;
   userEmail: string;
   merchantName: string;
 }
-
-export type CashbackStatus = 'pending' | 'approved' | 'rejected';

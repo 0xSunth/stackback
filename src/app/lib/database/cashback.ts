@@ -1,8 +1,8 @@
 import { db } from '@/db/client';
 import { eq } from 'drizzle-orm';
-import { cashbackRequests } from '@/db/schemas/cashback_requests';
-import { users } from '@/db/schemas/users';
-import { merchants } from '@/db/schemas/merchants';
+import { cashbackRequests } from '../../../../drizzle/schema/cashback_requests';
+import { users } from '../../../../drizzle/schema/users';
+import { merchants } from '../../../../drizzle/schema/merchants';
 
 export async function getCashbackRequests(page: number = 1, limit: number = 10) {
   const offset = (page - 1) * limit;

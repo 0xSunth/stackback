@@ -1,31 +1,18 @@
+'use client';
+
 import Image from 'next/image';
 import FeaturedMerchantCard from '@/app/components/FeaturedMerchantCard';
 import PartnerLogo from '@/app/components/PartnerLogo';
 import Link from 'next/link';
+import { useHighlightMerchants } from './hooks/useHighlightMerchants';
+import { useState } from 'react';
 
 export default function Home() {
-  const merchants = [
-    {
-      logoSrc: '/merchants/amazon.png',
-      logoAlt: 'Amazon',
-      cashbackPercent: 8,
-    },
-    {
-      logoSrc: '/merchants/walmart.png',
-      logoAlt: 'Walmart',
-      cashbackPercent: 3,
-    },
-    {
-      logoSrc: '/merchants/nike.png',
-      logoAlt: 'Nike',
-      cashbackPercent: 6,
-    },
-    {
-      logoSrc: '/merchants/airbnb.png',
-      logoAlt: 'Airbnb',
-      cashbackPercent: 5,
-    },
-  ];
+  const [limit, setLimit] = useState<number>(20);
+
+  const { merchants } = useHighlightMerchants({
+    limit,
+  });
 
   const partners = [
     { logoSrc: '/partners/alby.png', logoAlt: 'Alby' },
@@ -66,8 +53,8 @@ export default function Home() {
           {merchants.map((merchant, index) => (
             <FeaturedMerchantCard
               key={index}
-              logoSrc={merchant.logoSrc}
-              logoAlt={merchant.logoAlt}
+              logoSrc={merchant.logoUrl}
+              logoAlt={merchant.name}
               cashbackPercent={merchant.cashbackPercent}
             />
           ))}

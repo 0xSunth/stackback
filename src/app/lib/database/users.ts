@@ -1,5 +1,5 @@
 import { db } from '@/db/client';
-import { users } from '@/db/schemas';
+import { users } from '../../../../drizzle/schema';
 import bcrypt from 'bcryptjs';
 
 export async function createUser(email: string, password: string) {

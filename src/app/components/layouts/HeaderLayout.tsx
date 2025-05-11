@@ -1,5 +1,9 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import clsx from 'clsx';
 import AuthButton from '@/app/components/AuthButton';
 
 interface HeaderLayoutProps {
@@ -7,6 +11,13 @@ interface HeaderLayoutProps {
 }
 
 export default function HeaderLayout({ children }: HeaderLayoutProps) {
+  const pathname = usePathname();
+
+  const navItems = [
+    { href: '/merchants', label: 'Merchants' },
+    { href: '/dashboard', label: 'Dashboard' },
+  ];
+
   return (
     <main
       className="min-h-screen w-full px-4 pb-20 text-white"
@@ -24,18 +35,24 @@ export default function HeaderLayout({ children }: HeaderLayoutProps) {
 
         {/* Navigation */}
         <nav className="flex items-center gap-8 text-lg font-medium">
-          <Link
-            href="/merchants"
-            className="relative text-white/80 transition hover:text-white hover:underline hover:decoration-orange-500 hover:decoration-2 hover:underline-offset-8"
-          >
-            Merchants
-          </Link>
-          <Link
-            href="/dashboard"
-            className="relative text-white/80 transition hover:text-white hover:underline hover:decoration-orange-500 hover:decoration-2 hover:underline-offset-8"
-          >
-            Dashboard
-          </Link>
+          {navItems.map(({ href, label }) => {
+            const isActive = pathname === href;
+
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={clsx(
+                  'relative transition hover:text-white hover:underline hover:decoration-orange-500 hover:decoration-2 hover:underline-offset-8',
+                  isActive
+                    ? 'text-white underline decoration-orange-500 decoration-2 underline-offset-8'
+                    : 'text-white/80',
+                )}
+              >
+                {label}
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Login button */}

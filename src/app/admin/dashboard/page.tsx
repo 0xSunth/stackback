@@ -7,7 +7,7 @@ import { useCashbackRequests } from '@/app/hooks/useCashbackRequests';
 import { CashbackRequestWithRelations, CashbackStatus } from '@/app/utils/types';
 
 export default function AdminDashboardPage() {
-  const [limit, setLimit] = useState<number>(12);
+  const [limit, setLimit] = useState<number>(20);
   const [statusFilter, setStatusFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
 
