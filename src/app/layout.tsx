@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-            {/* 🔶 Top banner
+      {/* 🔶 Top banner
       <div className="w-full bg-orange-500 text-center text-sm font-medium text-white py-2">
         Join the waitlist and earn a +5% bonus in Bitcoin on your first payout
       </div> */}

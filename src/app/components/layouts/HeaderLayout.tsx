@@ -27,8 +27,6 @@ export default function HeaderLayout({ children }: HeaderLayoutProps) {
         background: 'radial-gradient(circle, #1E1E1E 0%, #121212 100%)',
       }}
     >
-
-
       {/* Header global */}
       <header className="mx-auto flex max-w-6xl items-center justify-between gap-8 py-6">
         {/* Logo */}

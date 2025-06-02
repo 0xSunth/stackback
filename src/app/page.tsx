@@ -8,6 +8,7 @@ import { useHighlightMerchants } from './hooks/useHighlightMerchants';
 import { useState } from 'react';
 
 export default function Home() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [limit, setLimit] = useState<number>(20);
 
   const { merchants, errors } = useHighlightMerchants({

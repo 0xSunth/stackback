@@ -12,20 +12,19 @@ export function useMerchant(name: string) {
     const fetchMerchant = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`/api/merchants?name=${encodeURIComponent(name)}`);
+        setErrors([]);
+        const response = await fetch(`/api/merchants/${encodeURIComponent(name)}`);
         const result = await response.json();
-        if (result.length != 0) {
-          setMerchant(result.merchants);
+
+        if (response.ok && result.merchant) {
+          setMerchant(result.merchant);
         } else {
           const errorMessage = result.errors || result.error || 'Unknown error';
-          if (Array.isArray(errorMessage)) {
-            setErrors(errorMessage);
-          } else {
-            setErrors([errorMessage]);
-          }
+          setErrors(Array.isArray(errorMessage) ? errorMessage : [errorMessage]);
         }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
-        setErrors(err.message);
+        setErrors([err.message || 'Failed to fetch merchant.']);
       } finally {
         setLoading(false);
       }

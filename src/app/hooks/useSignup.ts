@@ -4,7 +4,12 @@ export function useSignup() {
   const [errors, setErrors] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
-  async function signup(email: string, password: string, confirmPassword: string, consent: boolean) {
+  async function signup(
+    email: string,
+    password: string,
+    confirmPassword: string,
+    consent: boolean,
+  ) {
     setErrors([]);
     setLoading(true);
 

@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useMerchants } from '../hooks/useMerchants';
 
 export default function MerchantsPage() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [limit, setLimit] = useState<number>(20);
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('All');

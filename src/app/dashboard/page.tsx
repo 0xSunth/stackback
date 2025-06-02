@@ -31,6 +31,7 @@ createAppKit({
 });
 
 export default function DashboardPage() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [limit, setLimit] = useState<number>(20);
   const [isModalOpen, setIsModalOpen] = useState(false);
 

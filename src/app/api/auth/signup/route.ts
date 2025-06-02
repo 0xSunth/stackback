@@ -19,8 +19,9 @@ const signupFormSchema = z
       .regex(/\d/, { message: '• Password must contain a number.' })
       .regex(/[^a-zA-Z0-9]/, { message: '• Password must contain a special character.' }),
     confirmPassword: z.string(),
-    consent: z
-      .literal(true, { errorMap: () => ({ message: '• You must agree to the privacy policy.' }) }),
+    consent: z.literal(true, {
+      errorMap: () => ({ message: '• You must agree to the privacy policy.' }),
+    }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: '• Passwords do not match.',

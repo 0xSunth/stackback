@@ -35,7 +35,7 @@ export async function getMerchantByName(name: string) {
   const merchant = await db.query.merchants.findFirst({
     where: (merchants, { ilike }) => ilike(merchants.name, name),
   });
-
+  
   if (!merchant) {
     throw new AppError(`Merchant "${name}" not found.`, 404);
   }

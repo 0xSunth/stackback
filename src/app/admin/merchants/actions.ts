@@ -60,6 +60,9 @@ export async function createMerchant(state: FormState, formData: FormData) {
   }
 
   const { name, cashbackPercent, partner } = validatedFields.data;
+  console.log(name);
+  console.log(cashbackPercent);
+  console.log(partner);
 
   return {
     message: 'Merchant created successfully.',

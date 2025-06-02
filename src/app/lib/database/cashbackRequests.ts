@@ -3,7 +3,7 @@ import { cashbackRequests } from '@/schema/cashback_requests';
 import { AppError } from '@/lib/errors';
 import { currencyEnum } from '@/db/schema';
 
-type Currency = typeof currencyEnum.enumValues[number];
+type Currency = (typeof currencyEnum.enumValues)[number];
 
 interface CreateCashbackRequestParams {
   userId: number;

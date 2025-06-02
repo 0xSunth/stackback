@@ -8,6 +8,7 @@ import { useMerchants } from '@/app/hooks/useMerchants';
 import { Merchant } from '@/app/utils/types';
 
 export default function AdminMerchantsPage() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [limit, setLimit] = useState<number>(20);
 
   const { merchants } = useMerchants({
