@@ -4,14 +4,14 @@ export function useSignup() {
   const [errors, setErrors] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
-  async function signup(email: string, password: string, confirmPassword: string) {
+  async function signup(email: string, password: string, confirmPassword: string, consent: boolean) {
     setErrors([]);
     setLoading(true);
 
     try {
       const response = await fetch('/api/auth/signup', {
         method: 'POST',
-        body: JSON.stringify({ email, password, confirmPassword }),
+        body: JSON.stringify({ email, password, confirmPassword, consent }),
         headers: {
           'Content-Type': 'application/json',
         },

@@ -24,7 +24,7 @@ export default function AdminMerchantsPage() {
         </div>
         <nav className="flex gap-4 text-sm text-white/80 md:flex-col">
           <Link href="/admin/dashboard">Dashboard</Link>
-          <Link href="/admin/merchants" className="text-orange-400">
+          <Link href="/admin/merchants" className="text-white">
             Merchants
           </Link>
           <Link href="/" className="text-orange-400 transition hover:text-white">

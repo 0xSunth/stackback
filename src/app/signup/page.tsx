@@ -16,7 +16,7 @@ export default function SignupPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    signup(email, password, confirmPassword);
+    await signup(email, password, confirmPassword, consent);
   }
 
   return (
@@ -106,9 +106,7 @@ export default function SignupPage() {
             type="submit"
             className={clsx(
               'cursor-pointer rounded-lg bg-orange-500 px-4 py-3 font-semibold text-white transition hover:bg-orange-600',
-              { 'cursor-not-allowed opacity-50': !consent },
             )}
-            disabled={!consent}
           >
             {loading ? 'Signing up...' : 'Sign Up'}
           </button>

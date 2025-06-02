@@ -22,10 +22,10 @@ export default function MerchantListCard({ name, cashback, logo, partner }: Merc
       <Image
         src={logo}
         alt={name}
-        width={64}
-        height={64}
+        width={80}
+        height={80}
         loading="lazy"
-        className="max-h-[48px] max-w-[72px] object-contain"
+        className="mx-auto h-20 w-20 object-contain"
       />
       <h2 className="text-lg font-semibold">{name}</h2>
       <div className="rounded-full bg-[#33383E] px-3 py-1 text-xs whitespace-nowrap text-orange-400 sm:text-sm">

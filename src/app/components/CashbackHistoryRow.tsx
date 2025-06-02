@@ -1,37 +1,27 @@
 import Image from 'next/image';
+import { CashbackRequestWithRelations } from '../utils/types';
 
 interface CashbackHistoryRowProps {
-  date: string;
-  logo: string;
-  merchant: string;
-  status: string;
-  amount: string;
-  onClick?: () => void; // Ajout ici
+  request: CashbackRequestWithRelations;
+  onClick?: () => void;
 }
 
-export default function CashbackHistoryRow({
-  date,
-  logo,
-  merchant,
-  status,
-  amount,
-  onClick,
-}: CashbackHistoryRowProps) {
+export default function CashbackHistoryRow({ request, onClick }: CashbackHistoryRowProps) {
   return (
     <tr
-      onClick={onClick} // Déclenche la modal
+      onClick={onClick}
       className="cursor-pointer border-t border-[#33383E] transition hover:bg-[#1B1E22]/50"
     >
-      <td className="px-4 py-3">{date}</td>
+      <td className="px-4 py-3">{request.createdAt}</td>
       <td className="flex items-center gap-2 px-4 py-3">
         <Image
-          src={logo}
-          alt={merchant}
+          src={'logo'}
+          alt={request.merchantName}
           width={20}
           height={20}
           className="max-h-5 max-w-5 object-contain"
         />
-        <span>{merchant}</span>
+        <span>{request.merchantName}</span>
       </td>
       <td
         className={`px-4 py-3 ${
@@ -44,7 +34,9 @@ export default function CashbackHistoryRow({
       >
         {status}
       </td>
-      <td className="px-4 py-3 text-right font-semibold">{amount}</td>
+      <td className="px-4 py-3 text-right font-semibold">
+        {request.amount} {request.currency}
+      </td>
     </tr>
   );
 }

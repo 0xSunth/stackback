@@ -16,15 +16,17 @@ export default function MerchantsPage() {
 
   console.log('merchants', merchants);
 
-  const filteredMerchants = merchants.filter((merchant) => {
-    const matchSearch = merchant.name.toLowerCase().includes(search.toLowerCase());
-    const matchFilter =
-      filter === 'All' ||
-      (filter === 'Partner' && merchant.partner === true) ||
-      (filter === '5' && merchant.cashbackPercent >= 5) ||
-      (filter === '8' && merchant.cashbackPercent >= 8);
-    return matchSearch && matchFilter;
-  });
+  const filteredMerchants =
+    merchants &&
+    merchants.filter((merchant) => {
+      const matchSearch = merchant.name.toLowerCase().includes(search.toLowerCase());
+      const matchFilter =
+        filter === 'All' ||
+        (filter === 'Partner' && merchant.partner === true) ||
+        (filter === '5' && merchant.cashbackPercent >= 5) ||
+        (filter === '8' && merchant.cashbackPercent >= 8);
+      return matchSearch && matchFilter;
+    });
 
   return (
     <HeaderLayout>
@@ -53,15 +55,13 @@ export default function MerchantsPage() {
           >
             <option value="All">All Cashback</option>
             <option value="Partner">Only Partners</option>
-            <option value="5">5% or more</option>
-            <option value="8">8% or more</option>
           </select>
         </div>
       </div>
 
       {/* Grid Merchants */}
       <section className="mx-auto grid max-w-6xl grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {filteredMerchants.length > 0 ? (
+        {filteredMerchants && filteredMerchants.length > 0 ? (
           filteredMerchants.map((merchant, index) => (
             <MerchantListCard
               key={index}

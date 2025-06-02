@@ -1,16 +1,16 @@
-import { db } from '@/db/client';
-import { users } from '../../../../drizzle/schema';
+import { db } from '@/db';
+import { users } from '@/schema/users';
 import bcrypt from 'bcryptjs';
+import { AppError } from '@/lib/errors';
 
 export async function createUser(email: string, password: string) {
-  const passwordHash = await bcrypt.hash(password, 10);
-
   const existing = await db.query.users.findFirst({
     where: (user, { eq }) => eq(user.email, email),
   });
   if (existing) {
-    throw new Error('This email is already registered.');
+    throw new AppError('Email already in use', 409);
   }
+  const passwordHash = await bcrypt.hash(password, 10);
 
   const result = await db
     .insert(users)
@@ -29,12 +29,12 @@ export async function loginUser(email: string, password: string) {
   });
 
   if (!user) {
-    throw new Error('Invalid email or password.');
+    throw new AppError('Invalid email or password', 401);
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
   if (!isPasswordValid) {
-    throw new Error('Invalid email or password.');
+    throw new AppError('Invalid email or password', 401);
   }
 
   return {

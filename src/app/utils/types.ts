@@ -3,6 +3,7 @@ export interface Merchant {
   name: string;
   cashbackPercent: number;
   logoUrl: string;
+  affiliateUrl: string;
   partner: boolean;
   createdAt: string;
   updatedAt: string;
@@ -22,9 +23,11 @@ export interface CashbackRequests {
 
 export interface CashbackRequestWithRelations {
   id: string;
-  amount_btc: number;
+  amount: number;
+  currency: string;
+  amountBTC: number;
   status: CashbackStatus;
-  receiptUrl: string | undefined;
+  receiptUrl: string;
   createdAt: string;
   userEmail: string;
   merchantName: string;

@@ -27,16 +27,18 @@ export const useHighlightMerchants = ({
         query.append('limit', limit.toString());
 
         const response = await fetch(`${API_URL}/api/merchants/highlight?${query.toString()}`);
-        const result = await response.json();
-        if (result.length != 0) {
-          setMerchants(result.merchants);
-        } else {
-          const errorMessage = result.errors || result.error || 'Unknown error';
-          if (Array.isArray(errorMessage)) {
-            setErrors(errorMessage);
+        if (response.ok) {
+          const result = await response.json();
+          setMerchants(result.merchants || []);
+
+          if ((result.merchants || []).length === 0) {
+            setErrors(['No merchants found.']);
           } else {
-            setErrors([errorMessage]);
+            setErrors([]);
           }
+        } else {
+          const errorMessage = (await response.json()).error || 'Failed to fetch merchants.';
+          setErrors([errorMessage]);
         }
       } catch (error) {
         setErrors(['Network or server error.']);

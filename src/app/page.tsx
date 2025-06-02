@@ -10,7 +10,7 @@ import { useState } from 'react';
 export default function Home() {
   const [limit, setLimit] = useState<number>(20);
 
-  const { merchants } = useHighlightMerchants({
+  const { merchants, errors } = useHighlightMerchants({
     limit,
   });
 
@@ -50,14 +50,22 @@ export default function Home() {
         </section>
         {/* Cards merchants */}
         <section className="mt-12 flex w-full flex-wrap justify-center gap-[16px] sm:mt-16 sm:gap-[24px]">
-          {merchants.map((merchant, index) => (
-            <FeaturedMerchantCard
-              key={index}
-              logoSrc={merchant.logoUrl}
-              logoAlt={merchant.name}
-              cashbackPercent={merchant.cashbackPercent}
-            />
-          ))}
+          {errors.length > 0 && (
+            <div className="rounded-lg bg-red-900/30 p-3 text-sm text-red-400">
+              {errors.map((err, idx) => (
+                <div key={idx}>{err}</div>
+              ))}
+            </div>
+          )}
+          {merchants &&
+            merchants.map((merchant, index) => (
+              <FeaturedMerchantCard
+                key={index}
+                logoSrc={merchant.logoUrl}
+                logoAlt={merchant.name}
+                cashbackPercent={merchant.cashbackPercent}
+              />
+            ))}
         </section>
         {/* Call to action */}
         <div className="mt-12 flex flex-col items-center px-2 sm:mt-16">

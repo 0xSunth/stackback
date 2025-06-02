@@ -4,49 +4,39 @@ import HeaderLayout from '@/app/components/layouts/HeaderLayout';
 import CashbackHistoryRow from '@/app/components/CashbackHistoryRow';
 import { useState } from 'react';
 import SubmitCashbackModal from '@/app/components/modals/SubmitCashbackModal';
+import { createAppKit, useAppKit, useAppKitAccount } from '@reown/appkit/react';
+import { BitcoinAdapter } from '@reown/appkit-adapter-bitcoin';
+import { AppKitNetwork, bitcoin, bitcoinTestnet } from '@reown/appkit/networks';
+import { useCashbackRequests } from '../hooks/useCashbackRequests';
 
-// Exemple de données fictives
-const cashbackHistory = [
-  {
-    date: 'Apr 10, 2024',
-    merchant: 'Nike',
-    status: 'Pending',
-    amount: '0.0008 BTC',
-    logo: '/merchants/nike.png',
+const projectId = process.env.NEXT_PUBLIC_PROJECT_ID || 'b56e18d47c72ab683b10814fe9495694';
+const networks = [bitcoin, bitcoinTestnet] as [AppKitNetwork, ...AppKitNetwork[]];
+const bitcoinAdapter = new BitcoinAdapter({
+  projectId,
+});
+
+createAppKit({
+  adapters: [bitcoinAdapter],
+  networks,
+  projectId,
+  themeMode: 'light',
+  features: {
+    analytics: true,
+    socials: [],
+    email: false,
   },
-  {
-    date: 'Mar 28, 2024',
-    merchant: 'Amazon',
-    status: 'Confirmed',
-    amount: '0.0012 BTC',
-    logo: '/merchants/amazon.png',
+  themeVariables: {
+    '--w3m-accent': '#000000',
   },
-  {
-    date: 'Mar 15, 2024',
-    merchant: 'Walmart',
-    status: 'Rejected',
-    amount: '0.0005 BTC',
-    logo: '/merchants/walmart.png',
-  },
-  {
-    date: 'Feb 2, 2024',
-    merchant: 'Nike',
-    status: 'Confirmed',
-    amount: '0.0009 BTC',
-    logo: '/merchants/nike.png',
-  },
-];
+});
 
 export default function DashboardPage() {
+  const [limit, setLimit] = useState<number>(20);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [connectedAddress, setConnectedAddress] = useState('');
 
-  const connectWallet = () => {
-    // 💡 EXEMPLE SIMPLE pour demo — remplacer par une vraie connexion wallet.
-    // Avec Xverse ou Hiro, il faudra intégrer un provider.
-    const fakeAddress = 'bc1qexampleaddressxverse1234567890';
-    setConnectedAddress(fakeAddress);
-  };
+  const { address, isConnected } = useAppKitAccount();
+  const { open } = useAppKit();
+  const { cashbackRequests } = useCashbackRequests({ limit });
 
   return (
     <HeaderLayout>
@@ -57,23 +47,26 @@ export default function DashboardPage() {
           {/* Total Bitcoin Earned */}
           <div className="flex-1 rounded-lg border border-[#33383E] bg-[#1B1E22] p-6">
             <p className="mb-2 text-sm text-gray-400">Total Bitcoin Earned</p>
-            <p className="text-3xl font-bold text-orange-400 md:text-4xl">0,0125 BTC</p>
+            <p className="text-3xl font-bold text-orange-400 md:text-4xl">0,1 BTC</p>
             <div className="mt-3 h-2 overflow-hidden rounded-full bg-[#33383E]">
-              <div className="h-full w-[60%] rounded-full bg-orange-500"></div>
+              <div className="h-full w-[30%] rounded-full bg-orange-500"></div>
             </div>
+            <button className="mt-4 cursor-pointer rounded-md bg-orange-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-orange-600">
+              Collect BTC
+            </button>
           </div>
 
           {/* Bitcoin Wallet Address */}
           <div className="flex w-full flex-col items-center gap-4 rounded-lg border border-[#33383E] bg-[#1B1E22] p-6 text-center md:w-[350px]">
             <p className="text-sm font-medium text-gray-400">Your Bitcoin Wallet</p>
-            {connectedAddress ? (
+            {isConnected ? (
               <div className="text-center font-semibold text-green-400">
                 <p>Connected</p>
-                <p className="text-sm break-all">{connectedAddress}</p>
+                <p className="text-sm break-all">{address}</p>
               </div>
             ) : (
               <button
-                onClick={connectWallet}
+                onClick={() => open()}
                 className="cursor-pointer rounded-lg border border-orange-500 px-6 py-2 text-base text-orange-400 transition hover:bg-orange-500/20"
               >
                 Connect Wallet
@@ -85,7 +78,15 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <h2 className="mb-4 text-2xl font-semibold">Cashback History</h2>
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-2xl font-semibold">Cashback History</h2>
+          <a
+            href="/upload-receipt"
+            className="mt-4 cursor-pointer rounded-md bg-orange-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-orange-600"
+          >
+            Upload Receipt
+          </a>
+        </div>
         <div className="overflow-hidden rounded-lg border border-[#33383E]">
           <table className="w-full text-left text-sm">
             <thead className="bg-[#1B1E22] text-white/80">
@@ -97,17 +98,21 @@ export default function DashboardPage() {
               </tr>
             </thead>
             <tbody>
-              {cashbackHistory.map((item, idx) => (
-                <CashbackHistoryRow
-                  key={idx}
-                  date={item.date}
-                  logo={item.logo}
-                  merchant={item.merchant}
-                  status={item.status}
-                  amount={item.amount}
-                  onClick={() => setIsModalOpen(true)}
-                />
-              ))}
+              {cashbackRequests && cashbackRequests.length > 0 ? (
+                cashbackRequests.map((request) => (
+                  <CashbackHistoryRow
+                    key={request.id}
+                    request={request}
+                    onClick={() => setIsModalOpen(true)}
+                  />
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={4} className="px-4 py-6 text-center text-white/50">
+                    No cashback requests yet.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
