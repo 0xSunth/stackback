@@ -15,8 +15,6 @@ export default function MerchantsPage() {
     limit,
   });
 
-  console.log('merchants', merchants);
-
   const filteredMerchants =
     merchants &&
     merchants.filter((merchant) => {

@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import slugify from 'slugify';
 
 interface MerchantListCardProps {
   name: string;
@@ -9,7 +10,7 @@ interface MerchantListCardProps {
 }
 
 export default function MerchantListCard({ name, cashback, logo, partner }: MerchantListCardProps) {
-  const merchantSlug = name.toLowerCase().replace(/\s+/g, '');
+  const merchantSlug = slugify(name, { lower: true, strict: true });
 
   return (
     <div className="relative flex flex-col items-center justify-center gap-4 rounded-lg border border-[#33383E] bg-[#1B1E22] p-6 text-center transition-transform hover:scale-[1.02]">

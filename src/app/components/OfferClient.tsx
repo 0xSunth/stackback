@@ -4,18 +4,9 @@ import { useEffect } from 'react';
 import Image from 'next/image';
 import { useMerchant } from '@/app/hooks/useMerchant';
 
-interface Props {
-  params: {
-    slug: string;
-  };
-}
-
-export default function OfferPage({ params }: Props) {
-  const { slug } = params;
-
-  const name = decodeURIComponent(slug);
+export default function OfferClient({ merchantSlug }: { merchantSlug: string }) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { merchant, loading, errors } = useMerchant(name);
+  const { merchant, loading, errors } = useMerchant(decodeURIComponent(merchantSlug as string));
 
   // Redirection auto après 3 secondes
   useEffect(() => {
@@ -42,8 +33,8 @@ export default function OfferPage({ params }: Props) {
           <Image
             src={merchant.logoUrl}
             alt={merchant.name}
-            width={80}
-            height={80}
+            width={180}
+            height={180}
             className="mb-4 max-h-[48px]"
           />
           <h1 className="mb-2 text-3xl font-bold">

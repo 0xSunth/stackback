@@ -22,7 +22,7 @@ export function useMerchant(name: string) {
           const errorMessage = result.errors || result.error || 'Unknown error';
           setErrors(Array.isArray(errorMessage) ? errorMessage : [errorMessage]);
         }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         setErrors([err.message || 'Failed to fetch merchant.']);
       } finally {

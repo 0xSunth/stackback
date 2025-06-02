@@ -3,10 +3,11 @@ import { NextResponse } from 'next/server';
 
 export async function GET(
   request: Request,
-  { params }: { params: { name: string } }
+  { params }: { params: Promise<{ merchantSlug: string }> },
 ) {
+  const { merchantSlug } = await params;
   try {
-    const merchant = await getMerchantByName(params.name);
+    const merchant = await getMerchantByName(decodeURIComponent(merchantSlug));
     return NextResponse.json({ merchant });
   } catch (error: unknown) {
     if (error instanceof Error) {

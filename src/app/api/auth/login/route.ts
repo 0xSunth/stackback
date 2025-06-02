@@ -2,12 +2,7 @@ import { NextResponse } from 'next/server';
 import { loginUser } from '@/app/lib/database/users';
 import { AppError } from '@/app/lib/errors';
 import { createSessionResponse } from '@/app/lib/server/session';
-import { z } from 'zod';
-
-const loginFormSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email.' }).trim(),
-  password: z.string().trim(),
-});
+import { loginFormSchema } from '@/app/lib/validation/loginFormSchema';
 
 export async function POST(request: Request) {
   try {

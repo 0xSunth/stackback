@@ -3,23 +3,10 @@ import { writeFile } from 'fs/promises';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { cookies } from 'next/headers';
-import { z } from 'zod';
 
 import { createCashbackRequest } from '@/app/lib/database/cashbackRequests';
 import { decrypt } from '@/server/session';
-
-export const uploadReceiptSchema = z.object({
-  merchantId: z.string().uuid({ message: '• Invalid merchant.' }),
-  amount: z.coerce
-    .number({ invalid_type_error: '• Amount must be a number.' })
-    .gt(0, { message: '• Amount must be greater than zero.' }),
-  currency: z.enum(['USD', 'EUR', 'GBP', 'JPY'], {
-    errorMap: () => ({ message: '• Invalid currency.' }),
-  }),
-  purchasedAt: z
-    .string()
-    .refine((val) => !isNaN(Date.parse(val)), { message: '• Invalid purchase date.' }),
-});
+import { uploadReceiptSchema } from '@/app/lib/validation/uploadReceiptSchema';
 
 export async function POST(req: Request) {
   try {
@@ -29,7 +16,17 @@ export async function POST(req: Request) {
     }
 
     const session = await decrypt(cookie);
-    const userId = typeof session?.userId === 'string' ? session.userId : null;
+
+    let userId: number | null = null;
+    if (session?.userId) {
+      if (typeof session.userId === 'number') {
+        userId = session.userId;
+      } else if (typeof session.userId === 'string') {
+        const parsed = parseInt(session.userId, 10);
+        userId = isNaN(parsed) ? null : parsed;
+      }
+    }
+
     if (!userId) {
       return NextResponse.json({ error: 'Invalid session' }, { status: 401 });
     }
@@ -70,10 +67,15 @@ export async function POST(req: Request) {
 
     const { merchantId, amount, currency, purchasedAt } = validatedFields.data;
 
+    // Only for testing
+    const BTC_EXCHANGE_RATE = 60000;
+    const amountBTC = (amount / BTC_EXCHANGE_RATE).toFixed(8);
+
     await createCashbackRequest({
-      user: userId,
-      merchant: merchantId,
-      amount,
+      userId,
+      merchantId,
+      amount: amount.toString(),
+      amountBTC,
       currency,
       purchasedAt: new Date(purchasedAt),
       receiptUrl,

@@ -164,11 +164,11 @@ export default function AdminDashboardPage() {
                     <td className="px-4 py-3">{cashback.userEmail}</td>
                     <td className="flex items-center gap-1 px-4 py-3">
                       {cashback.merchantName}
-                      {cashback.partner && (
+                      {/* {cashback.partner && (
                         <span className="ml-1 rounded-full bg-orange-500 px-2 py-0.5 text-xs text-black">
                           Partner
                         </span>
-                      )}
+                      )} */}
                     </td>
                     <td className="px-4 py-3">
                       {parseFloat(cashback.amountBTC.toString()).toFixed(4)}
