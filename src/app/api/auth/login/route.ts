@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
-import { z } from 'zod';
-import bcrypt from 'bcryptjs';
-import { db } from '@/db/client';
+import { loginUser } from '@/app/lib/database/users';
+import { AppError } from '@/app/lib/errors';
 import { createSessionResponse } from '@/app/lib/server/session';
+import { z } from 'zod';
 
 const loginFormSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email.' }).trim(),
@@ -12,48 +12,25 @@ const loginFormSchema = z.object({
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+    const result = loginFormSchema.safeParse(body);
 
-    const validatedFields = loginFormSchema.safeParse(body);
-    if (!validatedFields.success) {
-      return NextResponse.json(
-        {
-          errors: validatedFields.error.flatten().fieldErrors,
-        },
-        { status: 400 },
-      );
+    if (!result.success) {
+      const errors = result.error.flatten().fieldErrors;
+      return NextResponse.json({ errors }, { status: 400 });
     }
 
-    const { email, password } = validatedFields.data;
+    const { email, password } = result.data;
+    const user = await loginUser(email, password);
 
-    const user = await db.query.users.findFirst({
-      where: (user, { eq }) => eq(user.email, email),
-    });
-
-    if (!user) {
-      return NextResponse.json(
-        {
-          errors: {
-            email: ['Invalid email or password.'],
-          },
-        },
-        { status: 401 },
-      );
-    }
-
-    const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
-    if (!isPasswordValid) {
-      return NextResponse.json(
-        {
-          errors: {
-            password: ['Invalid email or password.'],
-          },
-        },
-        { status: 401 },
-      );
-    }
-
-    return await createSessionResponse(user.id, '/dashboard');
+    return await createSessionResponse(user.id.toString(), '/dashboard');
   } catch (error) {
+    if (error instanceof AppError) {
+      return NextResponse.json(
+        { errors: { email: ['• ' + error.message] } },
+        { status: error.statusCode },
+      );
+    }
+
     console.error('Login error:', error);
     return NextResponse.json({ message: 'Internal server error.' }, { status: 500 });
   }
