@@ -1,6 +1,6 @@
 {
-  "id": "631ab0db-b15e-4f3b-87cb-c2f28e1f7084",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "238579f0-f875-46d5-ae3e-e9bb16ba320a",
+  "prevId": "631ab0db-b15e-4f3b-87cb-c2f28e1f7084",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -220,14 +220,14 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "user": {
-          "name": "user",
+        "user_id": {
+          "name": "user_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
-        "merchant": {
-          "name": "merchant",
+        "merchant_id": {
+          "name": "merchant_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
@@ -259,7 +259,7 @@
         },
         "purchased_at": {
           "name": "purchased_at",
-          "type": "date",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": true
         },
@@ -291,7 +291,7 @@
           "name": "cashback_request_user_idx",
           "columns": [
             {
-              "expression": "user",
+              "expression": "user_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -302,11 +302,11 @@
           "method": "btree",
           "with": {}
         },
-        "merchant_idx": {
-          "name": "merchant_idx",
+        "cashback_request_merchant_idx": {
+          "name": "cashback_request_merchant_idx",
           "columns": [
             {
-              "expression": "merchant",
+              "expression": "merchant_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -319,20 +319,20 @@
         }
       },
       "foreignKeys": {
-        "cashback_requests_user_users_id_fk": {
-          "name": "cashback_requests_user_users_id_fk",
+        "cashback_requests_user_id_users_id_fk": {
+          "name": "cashback_requests_user_id_users_id_fk",
           "tableFrom": "cashback_requests",
           "tableTo": "users",
-          "columnsFrom": ["user"],
+          "columnsFrom": ["user_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "cashback_requests_merchant_merchants_id_fk": {
-          "name": "cashback_requests_merchant_merchants_id_fk",
+        "cashback_requests_merchant_id_merchants_id_fk": {
+          "name": "cashback_requests_merchant_id_merchants_id_fk",
           "tableFrom": "cashback_requests",
           "tableTo": "merchants",
-          "columnsFrom": ["merchant"],
+          "columnsFrom": ["merchant_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
