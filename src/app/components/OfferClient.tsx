@@ -8,7 +8,6 @@ export default function OfferClient({ merchantSlug }: { merchantSlug: string }) 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { merchant, loading, errors } = useMerchant(decodeURIComponent(merchantSlug as string));
 
-  // Redirection auto après 3 secondes
   useEffect(() => {
     if (merchant) {
       const timer = setTimeout(() => {

@@ -17,10 +17,6 @@ export default function AdminDashboardPage() {
   });
 
   const handleStatusChange = (id: string, newStatus: 'pending' | 'approved' | 'rejected') => {
-    // Optionnel : appel à une API pour mise à jour côté serveur
-    // await fetch(`/api/cashback/${id}`, { method: 'PATCH', body: JSON.stringify({ status: newStatus }) })
-
-    // Pour mise à jour locale (si tu veux le simuler côté client)
     setCashbackRequests((prev) =>
       prev.map((req) => (req.id === id ? { ...req, status: newStatus } : req)),
     );

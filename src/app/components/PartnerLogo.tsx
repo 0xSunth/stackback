@@ -10,7 +10,7 @@ export default function PartnerLogo({ logoSrc, logoAlt }: PartnerLogoProps) {
     <Image
       src={logoSrc}
       alt={logoAlt}
-      width={96} // ou une taille adaptée
+      width={96}
       height={32}
       className="object-contain opacity-80"
     />
